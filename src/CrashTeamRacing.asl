@@ -47,7 +47,7 @@ init
     // Changing the refresh rate for more precision, no need to be more than 120FPS
     refreshRate = 120;
 
-    // Storing the last race that you won
+    // Storing the last race that you won to prevent infinite splitting when finishing a race
     vars.lastRace = -1;
 }
 
@@ -57,6 +57,13 @@ update
     var lID = vars.levID_Addr;
     vars.gameMode = memory.ReadValue<uint>((IntPtr) gm);
     vars.levID = memory.ReadValue<uint>((IntPtr) lID);
+
+    // if you are in the adventure hub, set the last race won to -1,
+    // so the split can work again if you replay the same level (tokens, relics or reset after cove)
+    if (vars.levID > 18)
+    {
+        vars.lastRace = -1;
+    }
 }
 
 start
